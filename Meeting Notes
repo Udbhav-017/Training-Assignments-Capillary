@@ -1,0 +1,23 @@
+Hashmap Interface design
+System level exception//  write permission    validations
+File read write decouple,,,   block reading
+dependency object creation
+parameterized testing
+setwrite  false during compression		
+
+package name
+mocking
+resetting the mocks 
+package dependency plugin plant uml
+new algo - average length of symbol //  two chars at a time
+
+Different compression and decompression
+
+
+Q. We should make all internal methods as private and compress as public  // testing reflAbstractCompressor huffman_compressor, AbstractDecompressor huffman_decompressor
+Q. Problem with current strutcure: 
+	How to make internal methods private  //  abstraction
+	Multiple implementation with minor changes  at function level
+
+Making single class for each function//  making them static
+
