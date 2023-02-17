@@ -1,20 +1,20 @@
-package fileUtility;
+package com.huffmanzipper.commons;
 
 public class TerminalNode implements ITreeNode {
-    int weight;
-    char character;
+    Integer weight;
+    String character;
 
-    TerminalNode(int weight, char character) {
+    TerminalNode(Integer weight, String character) {
         this.weight = weight;
         this.character = character;
     }
 
-    public char getCharacter() {
+    public String getCharacter() {
         return this.character;
     }
 
     @Override
-    public int getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 

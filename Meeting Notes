@@ -21,3 +21,24 @@ Q. Problem with current strutcure:
 
 Making single class for each function//  making them static
 
+
+Q. How to handle: If corrupted file given to decompressor
+
+Q. testecase:  compressed file doesnt have enough carachet to read as given in header (file corrupted)
+
+
+if(Character.isLetter(ch)){
+	word+=ch;
+}
+else{
+	add(word);
+	add(ch);
+	word="";
+}
+
+if(word!="")
+	add(word)
+	
+	
+
+

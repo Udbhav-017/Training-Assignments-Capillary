@@ -1,7 +1,7 @@
-package fileUtility;
+package com.huffmanzipper.commons;
 
-interface ITreeNode {
-    int getWeight();
+interface ITreeNode{
+    Integer getWeight();
 
     void setLeft(ITreeNode node);
 

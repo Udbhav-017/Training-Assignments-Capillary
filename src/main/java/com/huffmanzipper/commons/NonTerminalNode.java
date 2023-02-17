@@ -1,16 +1,16 @@
-package fileUtility;
+package com.huffmanzipper.commons;
 
 public class NonTerminalNode implements ITreeNode {
-    int weight;
+    Integer weight;
     ITreeNode left;
     ITreeNode right;
 
-    NonTerminalNode(int weight) {
+    NonTerminalNode(Integer weight) {
         this.weight = weight;
     }
 
     @Override
-    public int getWeight() {
+    public Integer getWeight() {
         return this.weight;
     }
 
