@@ -11,7 +11,7 @@ public final class FileOutputStream implements IOutputStream{
         this.fos = new BufferedOutputStream(new java.io.FileOutputStream(new File(destinationFilePath)));
     }
     @Override
-    public void write(Byte data) throws IOException{
+    public void write(int data) throws IOException{
         fos.write(data);
     }
 

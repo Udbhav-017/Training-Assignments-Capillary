@@ -18,7 +18,7 @@ public class DecompressorImpl extends AbstractDecompressor {
         StringBuilder code = new StringBuilder();
 
         while (true) {
-            byte num = source.read();
+            int num = source.read();
 
             int bitsLeft = 8;
             while (bitsLeft-- > 0) {
@@ -27,10 +27,13 @@ public class DecompressorImpl extends AbstractDecompressor {
 
                 num <<= 1;
                 if (huffBitDecodes.containsKey(code.toString())) {
-                    byte[] data= huffBitDecodes.get(code.toString()).getBytes(StandardCharsets.UTF_8);
+//                    byte[] data= huffBitDecodes.get(code.toString()).getBytes(StandardCharsets.UTF_8);
+//
+//                    for(int b: data) destination.write(b);
 
-                    for(Byte b: data) destination.write(b);
-                    code = new StringBuilder();
+                      int data = huffBitDecodes.get(code.toString()).charAt(0);
+                      destination.write(data);
+                      code = new StringBuilder();
 
                     if (--noOfCharactersToScan == 0)
                         return;

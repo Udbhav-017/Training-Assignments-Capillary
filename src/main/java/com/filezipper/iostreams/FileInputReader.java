@@ -13,8 +13,8 @@ public final class FileInputReader implements  IInputStream{
     }
 
     @Override
-    public Byte read() throws IOException{
-        return (byte) fis.read();
+    public int read() throws IOException{
+        return fis.read();
     }
     @Override
     public Byte[] readNBytes(Integer noOfBytes) throws IOException{

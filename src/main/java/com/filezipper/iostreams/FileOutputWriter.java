@@ -9,7 +9,7 @@ public final class FileOutputWriter implements IOutputStream{
         this.fos = new BufferedWriter(new OutputStreamWriter(new java.io.FileOutputStream(destinationFilePath), StandardCharsets.UTF_8));
     }
     @Override
-    public void write(Byte data) throws IOException{
+    public void write(int data) throws IOException{
         fos.write(data);
     }
 
