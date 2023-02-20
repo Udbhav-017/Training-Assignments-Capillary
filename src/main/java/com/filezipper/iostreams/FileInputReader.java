@@ -1,12 +1,13 @@
 package com.filezipper.iostreams;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
-public final class FileInputStream implements  IInputStream{
-    private  InputStream fis;
+public final class FileInputReader implements  IInputStream{
+    private Reader fis;
     private String sourcePath;
-    public FileInputStream(String sourceFilePath) throws IOException {
-        this.fis = new BufferedInputStream(new java.io.FileInputStream(sourceFilePath));
+    public FileInputReader(String sourceFilePath) throws IOException {
+        this.fis = new BufferedReader(new InputStreamReader(new java.io.FileInputStream(sourceFilePath), StandardCharsets.UTF_8));
 
         this.sourcePath = sourceFilePath;
     }
@@ -26,15 +27,16 @@ public final class FileInputStream implements  IInputStream{
     }
 
     @Override
-    public Integer available() throws IOException {
-        return fis.available();
+    public Integer available() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void reset() throws IOException {
         fis.close();
-        fis = new BufferedInputStream(new java.io.FileInputStream(new File(sourcePath)));
+        fis = new BufferedReader(new InputStreamReader(new java.io.FileInputStream(sourcePath), StandardCharsets.UTF_8));
     }
+
     @Override
     public void finalize() throws Throwable{
         if(fis!=null)

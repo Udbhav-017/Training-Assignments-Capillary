@@ -1,14 +1,12 @@
 package com.filezipper.iostreams;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
-public final class FileOutputStream implements IOutputStream{
-    private OutputStream fos;
-    public FileOutputStream(String destinationFilePath) throws IOException {
-        this.fos = new BufferedOutputStream(new java.io.FileOutputStream(new File(destinationFilePath)));
+public final class FileOutputWriter implements IOutputStream{
+    private Writer fos;
+    public FileOutputWriter(String destinationFilePath) throws IOException {
+        this.fos = new BufferedWriter(new OutputStreamWriter(new java.io.FileOutputStream(destinationFilePath), StandardCharsets.UTF_8));
     }
     @Override
     public void write(Byte data) throws IOException{
