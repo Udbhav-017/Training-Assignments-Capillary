@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 public class Main {
     public static void main(String[] args) throws Throwable {
-        String original = "/home/udbhavgupta/IdeaProjects/input.txt";
+        String original = "/home/udbhavgupta/IdeaProjects/input2.txt";
         String compressed = "/home/udbhavgupta/IdeaProjects/comp.txt";
         String decompressed = "/home/udbhavgupta/IdeaProjects/final.txt";
 
