@@ -8,7 +8,7 @@ import com.huffmanzipper.commons.*;
 
 import java.io.IOException;
 
-public class CompressorImpl extends AbstractCompressor {
+public class DefaultCompressorImpl extends AbstractCompressor {
     protected IMap<String, Integer> createFrequencyTable(IInputStream source) throws IOException {
         IMap<String, Integer> frequencyTable = new HashMapImpl<>();
 

@@ -13,6 +13,7 @@ public class Main {
         String decompressed = "/home/udbhavgupta/IdeaProjects/final.txt";
 
         Zipper z = new Zipper(new DefaultHuffman());
+
         z.zip(original,compressed);
         Logger.getLogger(Main.class.getName()).log(Level.INFO,"Compressed!!");
 

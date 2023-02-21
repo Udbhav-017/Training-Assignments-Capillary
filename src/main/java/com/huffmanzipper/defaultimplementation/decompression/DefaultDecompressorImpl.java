@@ -7,9 +7,8 @@ import com.huffmanzipper.commons.IHeaderInfo;
 import com.filezipper.utilities.IMap;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
-public class DecompressorImpl extends AbstractDecompressor {
+public class DefaultDecompressorImpl extends AbstractDecompressor {
     @Override
     protected void huffmanDecoder(IInputStream source, IOutputStream destination, IMap<String, String> huffBitDecodes, IHeaderInfo headerInfo) throws IOException {
 
@@ -27,12 +26,10 @@ public class DecompressorImpl extends AbstractDecompressor {
 
                 num <<= 1;
                 if (huffBitDecodes.containsKey(code.toString())) {
-//                    byte[] data= huffBitDecodes.get(code.toString()).getBytes(StandardCharsets.UTF_8);
-//
-//                    for(int b: data) destination.write(b);
+                      for(char data: huffBitDecodes.get(code.toString()).toCharArray()){
+                          destination.write(data);
+                      }
 
-                      int data = huffBitDecodes.get(code.toString()).charAt(0);
-                      destination.write(data);
                       code = new StringBuilder();
 
                     if (--noOfCharactersToScan == 0)

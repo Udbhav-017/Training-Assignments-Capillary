@@ -8,6 +8,6 @@ public interface IMap < P, Q> extends Serializable {
     public boolean containsKey(P key);
     public Q get(P key);
     public IMapEntry<P, Q>[] getEntryArray();
-    public Integer size();
+    public int size();
     public IMap<Q, P> reverse();
 }

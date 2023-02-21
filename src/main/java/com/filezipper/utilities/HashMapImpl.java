@@ -46,7 +46,7 @@ public class HashMapImpl<M, N> implements IMap<M,N>, Serializable {
     }
 
     @Override
-    public Integer size() {
+    public int size() {
         return hmap.size();
     }
 
