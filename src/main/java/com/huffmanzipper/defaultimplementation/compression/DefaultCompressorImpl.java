@@ -9,6 +9,15 @@ import com.huffmanzipper.commons.*;
 import java.io.IOException;
 
 public class DefaultCompressorImpl extends AbstractCompressor {
+    private final IHeaderInfo headerInfo;
+    public DefaultCompressorImpl(IHeaderInfo headerInfoImpl){
+        this.headerInfo = headerInfoImpl;
+    }
+    @Override
+    protected IHeaderInfo getHeaderInfoEmptyObject() {
+        return this.headerInfo;
+    }
+
     protected IMap<String, Integer> createFrequencyTable(IInputStream source) throws IOException {
         IMap<String, Integer> frequencyTable = new HashMapImpl<>();
 
@@ -37,12 +46,12 @@ public class DefaultCompressorImpl extends AbstractCompressor {
 
             ch = String.valueOf((char) num);
             String code = huffBitCodes.get(ch);
-
+            int loop = 0;
             for (char bit : code.toCharArray()) {
+                loop++;
                 buffer = buffer << 1;
 
                 if (bit == '1') buffer = buffer ^ 1;
-
                 bitCount++;
                 padRequired = true;
 

@@ -10,27 +10,27 @@ import com.filezipper.utilities.Serialization;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-public class HeaderInfoImpl implements IHeaderInfo{
+public class HeaderInfoFreqMapImpl implements IHeaderInfo{
     private Integer size;
     private Integer totalCharactersInUncompressedFile;
     private Integer totalCharactersInCompressedFile;
     private Byte[] content;
 
     @Override
-    public void setHeaderInfoObject(IMap countMap, IMap huffBitCodeMap) throws IOException {
+    public void setHeaderInfoObject(IMap<String, Integer> countMap, IMap <String, String>huffBitCodeMap) throws IOException {
         int totalCharactersInUncompressed = 0;
         int totalCharactersInCompressed = 0;
 
-        for(IMapEntry entry: countMap.getEntryArray()){
-            totalCharactersInUncompressed += (int)entry.getValue();
-            totalCharactersInCompressed += (int)entry.getValue()*String.valueOf(huffBitCodeMap.get(entry.getKey())).length();
+        for(IMapEntry<String, Integer> entry: countMap.getEntryArray()){
+            totalCharactersInUncompressed += entry.getValue();
+            totalCharactersInCompressed += entry.getValue()*String.valueOf(huffBitCodeMap.get(entry.getKey())).length();
         }
         totalCharactersInCompressed = (int)Math.ceil(totalCharactersInCompressed/(8.0));
 
         setTotalCharactersInUncompressedFile(totalCharactersInUncompressed);
         setTotalCharactersInCompressedFile(totalCharactersInCompressed);
 
-        Byte[] content = Serialization.serialize(huffBitCodeMap);
+        Byte[] content = Serialization.serialize(countMap);
         setContent(content);
 
         setSize(this.content.length);
@@ -97,7 +97,7 @@ public class HeaderInfoImpl implements IHeaderInfo{
     }
 
     @Override
-    public void setContent(Byte[] content) throws IOException {
+    public void setContent(Byte[] content) {
         this.content = content;
     }
 

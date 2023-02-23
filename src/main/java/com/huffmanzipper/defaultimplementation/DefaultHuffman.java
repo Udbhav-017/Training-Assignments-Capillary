@@ -5,6 +5,7 @@ import com.filezipper.iostreams.IInputStream;
 import com.filezipper.iostreams.IOutputStream;
 import com.huffmanzipper.commons.AbstractCompressor;
 import com.huffmanzipper.commons.AbstractDecompressor;
+import com.huffmanzipper.commons.HeaderInfoHuffCodesImpl;
 import com.huffmanzipper.defaultimplementation.compression.DefaultCompressorImpl;
 import com.huffmanzipper.defaultimplementation.decompression.DefaultDecompressorImpl;
 
@@ -14,8 +15,8 @@ public class DefaultHuffman implements IZipperAlgorithm {
     private final AbstractCompressor huffman_compressor;
     private final AbstractDecompressor huffman_decompressor;
     public DefaultHuffman(){
-        this.huffman_compressor = new DefaultCompressorImpl();
-        this.huffman_decompressor = new DefaultDecompressorImpl();
+        this.huffman_compressor = new DefaultCompressorImpl(new HeaderInfoHuffCodesImpl());
+        this.huffman_decompressor = new DefaultDecompressorImpl(new HeaderInfoHuffCodesImpl());
     }
 
     DefaultHuffman(AbstractCompressor huffman_compressor, AbstractDecompressor huffman_decompressor){

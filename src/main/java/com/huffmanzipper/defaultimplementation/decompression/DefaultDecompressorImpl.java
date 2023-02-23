@@ -9,6 +9,21 @@ import com.filezipper.utilities.IMap;
 import java.io.IOException;
 
 public class DefaultDecompressorImpl extends AbstractDecompressor {
+    private final IHeaderInfo headerInfo;
+    public DefaultDecompressorImpl(IHeaderInfo headerInfoImpl){
+        this.headerInfo = headerInfoImpl;
+    }
+    @Override
+    protected IHeaderInfo getHeaderInfoEmptyObject() {
+        return this.headerInfo;
+    }
+
+    @Override
+    public IMap<String, String> getHuffBitDecodesFromHeader() throws IOException, ClassNotFoundException {
+        IMap<String, String> huffBitCodes = (IMap<String, String>) this.headerInfo.getContent();
+        return huffBitCodes.reverse();
+    }
+
     @Override
     protected void huffmanDecoder(IInputStream source, IOutputStream destination, IMap<String, String> huffBitDecodes, IHeaderInfo headerInfo) throws IOException {
 
