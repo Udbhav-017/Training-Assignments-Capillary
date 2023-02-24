@@ -1,6 +1,8 @@
 package com.filezipper.utilities;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Map;
 
 public class HashMapImpl<M, N> implements IMap<M,N>, Serializable {
@@ -25,9 +27,7 @@ public class HashMapImpl<M, N> implements IMap<M,N>, Serializable {
 
     @Override
     public boolean containsKey(M key) {
-        if(hmap.containsKey(key))
-            return true;
-        return false;
+        return hmap.containsKey(key);
     }
 
     @Override
@@ -58,5 +58,20 @@ public class HashMapImpl<M, N> implements IMap<M,N>, Serializable {
             rev.put(entry.getValue(), entry.getKey());
         }
         return rev;
+    }
+
+    public Object[] sortKeyByValues(){
+        Object[] sortedKeys = new Object[this.size()];
+        int ind = 0;
+        for (Map.Entry<M, N> entry : hmap.entrySet()) {
+            sortedKeys[ind++] = entry.getKey();
+        }
+        Arrays.sort(sortedKeys, new Comparator<Object>(){
+            @Override
+            public int compare(Object o1, Object o2) {
+                return (Integer)hmap.get(o2) - (Integer)hmap.get(o1);
+            }
+        });
+        return sortedKeys;
     }
 }

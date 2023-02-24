@@ -7,7 +7,7 @@ import com.filezipper.utilities.IMap;
 import java.io.IOException;
 
 public abstract class AbstractDecompressor {
-    public void decompress(IInputStream source, IOutputStream destination) throws IOException, ClassNotFoundException {
+    public final void decompress(IInputStream source, IOutputStream destination) throws IOException, ClassNotFoundException {
         IHeaderInfo headerInfo = getHeaderInfoEmptyObject();
         headerInfo.readHeader(source);
 

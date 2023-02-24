@@ -23,7 +23,7 @@ public class HeaderInfoFreqMapImpl implements IHeaderInfo{
 
         for(IMapEntry<String, Integer> entry: countMap.getEntryArray()){
             totalCharactersInUncompressed += entry.getValue();
-            totalCharactersInCompressed += entry.getValue()*String.valueOf(huffBitCodeMap.get(entry.getKey())).length();
+            totalCharactersInCompressed += entry.getValue() * huffBitCodeMap.get(entry.getKey()).length();
         }
         totalCharactersInCompressed = (int)Math.ceil(totalCharactersInCompressed/(8.0));
 

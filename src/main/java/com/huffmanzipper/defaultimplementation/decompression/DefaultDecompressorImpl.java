@@ -27,12 +27,12 @@ public class DefaultDecompressorImpl extends AbstractDecompressor {
     @Override
     protected void huffmanDecoder(IInputStream source, IOutputStream destination, IMap<String, String> huffBitDecodes, IHeaderInfo headerInfo) throws IOException {
 
-        int noOfCharactersToScan = headerInfo.getTotalCharactersInUncompressedFile();
-
         StringBuilder code = new StringBuilder();
 
         while (true) {
             int num = source.read();
+
+            if(num==-1) return;
 
             int bitsLeft = 8;
             while (bitsLeft-- > 0) {
@@ -47,8 +47,6 @@ public class DefaultDecompressorImpl extends AbstractDecompressor {
 
                       code = new StringBuilder();
 
-                    if (--noOfCharactersToScan == 0)
-                        return;
                     }
                 }
             }

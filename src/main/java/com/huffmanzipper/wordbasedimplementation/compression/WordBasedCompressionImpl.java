@@ -12,9 +12,14 @@ import com.huffmanzipper.defaultimplementation.compression.DefaultCompressorImpl
 import java.io.IOException;
 
 public class WordBasedCompressionImpl extends DefaultCompressorImpl {
-
     public WordBasedCompressionImpl(IHeaderInfo headerInfoImpl) {
         super(headerInfoImpl);
+    }
+
+    public class encodingState{
+        public int bitCount = 0;            // tracking number of bits for writing 1 byte to file
+        public int buffer = 0;             // bits to be written in output file
+        public boolean padRequired = true;
     }
 
     @Override
@@ -27,7 +32,7 @@ public class WordBasedCompressionImpl extends DefaultCompressorImpl {
         while ((num = source.read()) != -1) {
 
             char ch = (char)num;
-            if(Character.isLetter(ch)){
+            if(Character.isLetterOrDigit(ch)){
                 word.append(ch);
             }
             else{
@@ -46,82 +51,57 @@ public class WordBasedCompressionImpl extends DefaultCompressorImpl {
     @Override
     protected void huffmanEncoder(IInputStream source, IOutputStream destination, IMap<String, String> huffBitCodes) throws IOException{
 
-        int num = 0;                // for reading from file
+        encodingState state = new encodingState();
+
         StringBuilder word = new StringBuilder();
-        int bitCount = 0;            // tracking number of bits for writing 1 byte to file
-        int buffer = 0;             // bits to be written in output file
-        boolean padRequired = true;
         String code="";
+
+        int num = 0;                // for reading from file
 
         while ((num = source.read()) != -1) {
             char c = (char)num;
-            if(Character.isLetter(c)){
+            if(Character.isLetterOrDigit(c)){
                 word.append(c);
             }
             else{
                 code = huffBitCodes.get(word.toString());
-                for (char bit : code.toCharArray()) {
-                    buffer = buffer << 1;
-
-                    if (bit == '1') buffer = buffer ^ 1;
-                    bitCount++;
-                    padRequired = true;
-
-                    if (bitCount == 8) {
-                        byte b = (byte) buffer;
-                        destination.write(b);
-                        buffer = 0;
-                        bitCount = 0;
-                        padRequired = false;
-                    }
-                }
+                writeHuffCode(code, state, destination);
                 word.setLength(0);
                 word.append(c);
 
                 code = huffBitCodes.get(word.toString());
-                for (char bit : code.toCharArray()) {
-                    buffer = buffer << 1;
-
-                    if (bit == '1') buffer = buffer ^ 1;
-                    bitCount++;
-                    padRequired = true;
-
-                    if (bitCount == 8) {
-                        byte b = (byte) buffer;
-                        destination.write(b);
-                        buffer = 0;
-                        bitCount = 0;
-                        padRequired = false;
-                    }
-                }
+                writeHuffCode(code, state, destination);
                 word.setLength(0);
             }
-
         }
         if(word.length()!=0){
             code = huffBitCodes.get(word.toString());
-
-            for (char bit : code.toCharArray()) {
-                buffer = buffer << 1;
-
-                if (bit == '1') buffer = buffer ^ 1;
-                bitCount++;
-                padRequired = true;
-
-                if (bitCount == 8) {
-                    byte b = (byte) buffer;
-                    destination.write(b);
-                    buffer = 0;
-                    bitCount = 0;
-                    padRequired = false;
-                }
-            }
+            writeHuffCode(code, state, destination);
         }
 
-        if (padRequired){
-            buffer = buffer << (8 - bitCount);
-            byte b = (byte) buffer;
+        if (state.padRequired){
+            state.buffer = state.buffer << (8 - state.bitCount);
+            byte b = (byte) state.buffer;
             destination.write(b);
+        }
+    }
+
+    protected void writeHuffCode(String code, encodingState state, IOutputStream destination) throws IOException {
+        for (char bit : code.toCharArray()) {
+            state.buffer = state.buffer << 1;
+
+            if (bit == '1') state.buffer = state.buffer ^ 1;
+            state.bitCount++;
+            state.padRequired = true;
+
+            if (state.bitCount == 8) {
+                byte b = (byte) state.buffer;
+
+                destination.write(b);
+                state.buffer = 0;
+                state.bitCount = 0;
+                state.padRequired = false;
+            }
         }
     }
 }
