@@ -1,12 +1,12 @@
 package com.capillary;
 
 import com.filezipper.Zipper;
+import com.filezipper.statistics.Stats;
 import com.huffmanzipper.defaultimplementation.DefaultHuffman;
 import com.huffmanzipper.wordbasedimplementation.WordBasedHuffman;
 import com.huffmanzipper.wordcharimplementation.WordCharBasedHuffman;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.File;
 
 public class Main {
     public static void main(String[] args) throws Throwable {
@@ -14,15 +14,16 @@ public class Main {
         String compressed = "/home/udbhavgupta/IdeaProjects/comp.txt";
         String decompressed = "/home/udbhavgupta/IdeaProjects/final.txt";
 
-        Zipper z = new Zipper(new WordCharBasedHuffman());
+        Stats.fileName= original;
+        Zipper z = new Zipper(new DefaultHuffman());
 
-        long cstart = System.currentTimeMillis();
         z.zip(original,compressed);
-        long cend  = System.currentTimeMillis();
-        Logger.getLogger(Main.class.getName()).log(Level.INFO,"Compressed, Time Taken -> "+(cend-cstart));
 
         z.unzip(compressed, decompressed);
-        long dend  = System.currentTimeMillis();
-        Logger.getLogger(Main.class.getName()).log(Level.INFO,"Decompressed, Time Taken -> "+(dend-cend));
+
+        File cmp= new File(compressed);
+        Stats.compressedFileSizeInBytes = cmp.length();
+
+        Stats.logStats();
     }
 }

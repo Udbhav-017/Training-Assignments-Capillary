@@ -1,6 +1,7 @@
 package com.filezipper;
 
 import com.filezipper.iostreams.*;
+import com.filezipper.statistics.Stats;
 
 public class Zipper {
     private final IZipperAlgorithm zipAlgorithm;
@@ -13,17 +14,23 @@ public class Zipper {
         IInputStream source = new FileInputStream(sourcePath);
         IOutputStream destination = new FileOutputStream(destinationPath);
 
+        long cstart = System.currentTimeMillis();
         zipAlgorithm.compress(source, destination);
-        source.finalize();
-        destination.finalize();
+        long cend  = System.currentTimeMillis();
+        Stats.totalCompressionTimeInMilliSecs =  (cend-cstart);
+
+
     }
 
     public void unzip(String sourcePath, String destinationPath) throws Throwable {
         IInputStream source = new FileInputStream(sourcePath);
         IOutputStream destination = new FileOutputStream(destinationPath);
 
+        long dstart  = System.currentTimeMillis();
         zipAlgorithm.decompress(source, destination);
-        source.finalize();
-        destination.finalize();
+        long dend  = System.currentTimeMillis();
+        Stats.totalDecompressionTimeInMilliSecs =  (dend-dstart);
+
+
     }
 }

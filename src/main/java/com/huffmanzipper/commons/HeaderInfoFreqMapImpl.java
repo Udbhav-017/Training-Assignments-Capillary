@@ -2,6 +2,7 @@ package com.huffmanzipper.commons;
 
 import com.filezipper.iostreams.IInputStream;
 import com.filezipper.iostreams.IOutputStream;
+import com.filezipper.statistics.Stats;
 import com.filezipper.utilities.Deserialization;
 import com.filezipper.utilities.IMap;
 import com.filezipper.utilities.IMapEntry;
@@ -20,12 +21,16 @@ public class HeaderInfoFreqMapImpl implements IHeaderInfo{
     public void setHeaderInfoObject(IMap<String, Integer> countMap, IMap <String, String>huffBitCodeMap) throws IOException {
         int totalCharactersInUncompressed = 0;
         int totalCharactersInCompressed = 0;
-
+        int totalCharLength = 0;
         for(IMapEntry<String, Integer> entry: countMap.getEntryArray()){
+            totalCharLength+=entry.getKey().length()* entry.getValue();
             totalCharactersInUncompressed += entry.getValue();
             totalCharactersInCompressed += entry.getValue() * huffBitCodeMap.get(entry.getKey()).length();
         }
+        Stats.avgSymbolLength =  ((1.0)*totalCharactersInCompressed)/totalCharLength;
+
         totalCharactersInCompressed = (int)Math.ceil(totalCharactersInCompressed/(8.0));
+
 
         setTotalCharactersInUncompressedFile(totalCharactersInUncompressed);
         setTotalCharactersInCompressedFile(totalCharactersInCompressed);

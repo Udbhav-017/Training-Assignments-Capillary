@@ -21,6 +21,7 @@ public class WordBasedCompressionImpl extends DefaultCompressorImpl {
         public int buffer = 0;             // bits to be written in output file
         public boolean padRequired = true;
     }
+    int count = 0;
 
     @Override
     protected IMap<String, Integer> createFrequencyTable(IInputStream source) throws IOException{
@@ -40,7 +41,6 @@ public class WordBasedCompressionImpl extends DefaultCompressorImpl {
                 frequencyTable.increment(String.valueOf(ch), 1);
                 word.setLength(0);
             }
-
         }
         if(word.length()!=0)
             frequencyTable.increment(word.toString(), 1);
@@ -83,7 +83,9 @@ public class WordBasedCompressionImpl extends DefaultCompressorImpl {
             state.buffer = state.buffer << (8 - state.bitCount);
             byte b = (byte) state.buffer;
             destination.write(b);
+            count++;
         }
+        System.out.println("Encoder writes:"+count);
     }
 
     protected void writeHuffCode(String code, encodingState state, IOutputStream destination) throws IOException {
@@ -98,6 +100,7 @@ public class WordBasedCompressionImpl extends DefaultCompressorImpl {
                 byte b = (byte) state.buffer;
 
                 destination.write(b);
+                count++;
                 state.buffer = 0;
                 state.bitCount = 0;
                 state.padRequired = false;

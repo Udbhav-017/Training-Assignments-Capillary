@@ -33,7 +33,7 @@ public final class FileInputStream implements  IInputStream{
     @Override
     public void reset() throws IOException {
         fis.close();
-        fis = new BufferedInputStream(new java.io.FileInputStream(new File(sourcePath)));
+        fis = new BufferedInputStream(new java.io.FileInputStream(sourcePath));
     }
     @Override
     public void finalize() throws Throwable{

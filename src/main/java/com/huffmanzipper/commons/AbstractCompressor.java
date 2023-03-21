@@ -1,31 +1,43 @@
 package com.huffmanzipper.commons;
 
-import com.capillary.Main;
 import com.filezipper.iostreams.IInputStream;
 import com.filezipper.iostreams.IOutputStream;
+import com.filezipper.statistics.Stats;
 import com.filezipper.utilities.IMap;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public abstract class AbstractCompressor {
     public final void compress(IInputStream source, IOutputStream destination) throws IOException{
+        long start = System.currentTimeMillis();
         IMap<String, Integer> frequencyTable = createFrequencyTable(source);
+        long end = System.currentTimeMillis();
+        Stats.createFrequencyTableTime=end-start;
 
+        start = System.currentTimeMillis();
         IHuffmanTree hTree = createHuffmanTree(frequencyTable);
+        end = System.currentTimeMillis();
+        Stats.createHuffmanTreeTime=end-start;
+
+        start = System.currentTimeMillis();
         IMap<String, String> huffBitCodes = hTree.getBitEncodings();
+        end = System.currentTimeMillis();
+        Stats.generateHuffmanCodesTime=end-start;
 
         IHeaderInfo headerInfo = getHeaderInfoEmptyObject();
 
         headerInfo.setHeaderInfoObject(frequencyTable, huffBitCodes);
-        Logger.getLogger(AbstractCompressor.class.getName()).log(Level.INFO,"Header Size-> "+headerInfo.getSize());
-        Logger.getLogger(AbstractCompressor.class.getName()).log(Level.INFO,"Compressed Data Size-> "+headerInfo.getTotalCharactersInCompressedFile());
+        Stats.headerSizeInBytes = headerInfo.getSize();
+        Stats.compressedDataSizeInBytes = headerInfo.getTotalCharactersInCompressedFile();
 
         headerInfo.writeHeader(destination);
 
         source.reset();
+        start = System.currentTimeMillis();
         huffmanEncoder(source, destination, huffBitCodes);
+        end = System.currentTimeMillis();
+        Stats.huffmanEncoderTime=end-start;
     }
 
     protected abstract IHeaderInfo getHeaderInfoEmptyObject();

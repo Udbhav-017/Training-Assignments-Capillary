@@ -36,7 +36,7 @@ public class DefaultCompressorImpl extends AbstractCompressor {
     }
     protected void huffmanEncoder(IInputStream source, IOutputStream destination, IMap<String, String> huffBitCodes) throws IOException{
 
-        int num = 0;                // for reading from file
+        int num;                // for reading from file
         String ch;                    // for storing character conversion of int
         int bitCount = 0;            // tracking number of bits for writing 1 byte to file
         int buffer = 0;             // bits to be written in output file
@@ -46,9 +46,8 @@ public class DefaultCompressorImpl extends AbstractCompressor {
 
             ch = String.valueOf((char) num);
             String code = huffBitCodes.get(ch);
-            int loop = 0;
+
             for (char bit : code.toCharArray()) {
-                loop++;
                 buffer = buffer << 1;
 
                 if (bit == '1') buffer = buffer ^ 1;

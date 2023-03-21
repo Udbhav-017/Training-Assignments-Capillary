@@ -16,7 +16,7 @@ public class WordCharBasedCompressionImpl extends WordBasedCompressionImpl {
 
     @Override
     protected IMap<String, Integer> createFrequencyTable(IInputStream source) throws IOException {
-        int percent = 50;
+        int percent = 100;
         return getFilteredFrequencyTable((HashMapImpl<String, Integer>) super.createFrequencyTable(source), percent);
     }
 
@@ -91,7 +91,7 @@ public class WordCharBasedCompressionImpl extends WordBasedCompressionImpl {
         if (state.padRequired){
             state.buffer = state.buffer << (8 - state.bitCount);
             byte b = (byte) state.buffer;
-            destination.write(b);
+//            destination.write(b);
         }
     }
 }
